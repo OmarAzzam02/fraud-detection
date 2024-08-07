@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: licence-validator
+
+
+server:
+  port: 8081
