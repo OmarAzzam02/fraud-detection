@@ -6,16 +6,15 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.7.18</version>
-
 	</parent>
-	<groupId>org.eastnets.paymentguard</groupId>
-	<artifactId>fraud-detection</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>fraud-detection</name>
+	<groupId>com.omarazzam.paymentguard</groupId>
+	<artifactId>fraudpaymentdetection</artifactId>
+	<version>1.0</version>
+	<name>fraudpaymentdetection</name>
 	<modules>
-		<module>entry-point</module>
-		<module>discovery-server</module>
-		<module>licence-validator</module>
+		<module>entrypoint</module>
+		<module>discoveryserver</module>
+		<module>licencevalidator</module>
 	</modules>
 	<packaging>pom</packaging>
 	<description>Demo project for Spring Boot</description>
