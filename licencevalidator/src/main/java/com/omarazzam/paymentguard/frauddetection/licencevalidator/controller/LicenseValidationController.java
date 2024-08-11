@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Log4j2
+@RequestMapping("/license-service")
 public class LicenseValidationController {
 
 @Autowired
@@ -18,7 +20,7 @@ public class LicenseValidationController {
 
     @PostMapping("/validate")
     ResponseEntity<?> validateMessage( @RequestBody String message) {
-        System.out.println(message);
+
 
         try {
         boolean isValid = validateLicenseService.isValidLicense(message);
@@ -26,11 +28,11 @@ public class LicenseValidationController {
         if (isValid)
             return ResponseEntity.ok().body("Valid License");
 
-        return ResponseEntity.badRequest().body(" Invalid License ");
+        else return ResponseEntity.badRequest().body("Invalid License");
 
         }catch (Exception ex){
             log.error(ex);
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("An Expected Error occurred");
         }
 
 

@@ -54,7 +54,7 @@ public class LicenceValidatorRequestHandlerService {
 
     private  void send(List<ServiceInstance> list  , String message) throws Exception {
             log.info("sending....");
-            String url  = list.get(0).getUri().toURL() + "/validate";
+            String url  = list.get(0).getUri().toURL() + "/license-service/validate";
             ResponseEntity<?> response =   restTemplate.postForEntity( url, message , String.class);
 
     }

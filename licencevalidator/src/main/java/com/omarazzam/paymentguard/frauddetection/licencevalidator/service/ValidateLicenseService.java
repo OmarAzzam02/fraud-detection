@@ -10,13 +10,16 @@ import org.springframework.stereotype.Service;
 public class ValidateLicenseService {
 
 
-    public boolean isValidLicense(String license) {
+    public boolean isValidLicense(String message) throws Exception {
+
+        if(message == null)
+            throw new Exception("Message is Empty ");
 
         // implement logic for license
 
 
 
-        return false;
+        return true;
     }
 
 }
