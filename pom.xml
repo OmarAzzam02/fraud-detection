@@ -15,6 +15,7 @@
 		<module>entrypoint</module>
 		<module>discoveryserver</module>
 		<module>licencevalidator</module>
+		<module>evaluation</module>
 	</modules>
 	<packaging>pom</packaging>
 	<description>Demo project for Spring Boot</description>
