@@ -23,20 +23,16 @@ public class LicenceValidatorRequestHandlerService {
     private RestTemplate restTemplate;
 
     @Autowired
-    private DiscoveryClient discoveryClient;
-
-    @Autowired
     private SendMessageToEvaluation sendMessageToEvaluationImpl;
 
 
 
     public void sendRequestToLicenseValidator(String message) throws Exception {
             log.info(" Sending request to license validator {} " , message);
-            List<ServiceInstance> list = getLicenseValidatorInstances();
-             if(list.isEmpty())
-                 throw  new NoServiceInstanceFoundException("No Service Instance Found for LicenceValidator");
+
+
              try {
-                 send(list, message);
+                 send(message);
              }catch (Exception e) {
                  log.error(e);
                  throw e;
@@ -47,16 +43,9 @@ public class LicenceValidatorRequestHandlerService {
     }
 
 
-
-    private List<ServiceInstance> getLicenseValidatorInstances() {
-        return discoveryClient.getInstances("LICENCE-VALIDATOR");
-    }
-
-    private  void send(List<ServiceInstance> list  , String message) throws Exception {
-            log.info("sending....");
-            String url  = list.get(0).getUri().toURL() + "/license-service/validate";
+    private  void send(String message) throws Exception {
+            String url  = "http://LICENCE-VALIDATOR/license-service/validate";
             ResponseEntity<?> response =   restTemplate.postForEntity( url, message , String.class);
-
     }
 
 

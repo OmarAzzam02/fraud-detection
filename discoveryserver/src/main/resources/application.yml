@@ -9,4 +9,4 @@ eureka:
     fetchRegistry: false
     serviceUrl:
       #can be switched to https for security
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/
+      defaultZone: http://${eureka.instance.hostname}:${server.port}

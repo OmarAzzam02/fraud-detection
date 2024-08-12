@@ -3,14 +3,12 @@ package com.omarazzam.paymentguard.evaluation.config;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.jms.pool.PooledConnectionFactory;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 
 @Configuration
-@EnableEurekaClient
 @EnableJms
 public class EvaluationConfig {
 
@@ -37,6 +35,5 @@ public class EvaluationConfig {
         factory.setConcurrency("5-10");
         return factory;
     }
-
 
 }

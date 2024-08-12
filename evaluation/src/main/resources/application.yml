@@ -1,8 +1,21 @@
-
-
 server:
   port: 8083
 
 spring:
-      application:
-        name: evaluation
+  application:
+    name: evaluation
+
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+    in-memory: false
+    pool:
+      enabled: true
+      max-connections: 10
+
+  cloud:
+    loadbalancer:
+      cache:
+        ttl: 60s
+
