@@ -12,4 +12,6 @@ public class EntryPointApplication {
     public static void main(String[] args) {
         SpringApplication.run(EntryPointApplication.class, args);
     }
+
+
 }

@@ -6,13 +6,12 @@ spring:
     name: evaluation
 
   activemq:
-    broker-url: tcp://localhost:61616
     user: admin
     password: admin
-    in-memory: false
     pool:
       enabled: true
       max-connections: 10
+
 
   cloud:
     loadbalancer:

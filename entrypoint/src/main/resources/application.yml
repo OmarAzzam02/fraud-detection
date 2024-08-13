@@ -5,7 +5,20 @@ spring:
   application:
     name: entry-point
 
+  activemq:
+    user: admin
+    password: admin
+    pool:
+      enabled: true
+      max-connections: 10
+
+
+
+
+
 eureka:
     client:
       serviceUrl:
         defaultZone: http://localhost:8761/eureka
+
+

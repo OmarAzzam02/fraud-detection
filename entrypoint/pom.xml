@@ -46,7 +46,7 @@
         </dependency>
 
 
-            <!-- Spring Boot Starter for ActiveMQ -->
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-activemq</artifactId>

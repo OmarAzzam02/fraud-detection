@@ -1,6 +1,7 @@
 package com.omarazzam.paymentguard.frauddetection.licencevalidator.controller;
 
 
+import com.omarazzam.paymentguard.frauddetection.licencevalidator.entity.Licence;
 import com.omarazzam.paymentguard.frauddetection.licencevalidator.service.ValidateLicenseService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class LicenseValidationController {
     ValidateLicenseService validateLicenseService;
 
     @PostMapping("/validate")
-    ResponseEntity<?> validateMessage( @RequestBody String message) {
+    ResponseEntity<?> validateMessage( @RequestBody Licence message) {
 
 
         try {

@@ -1,4 +1,5 @@
 package com.omarazzam.paymentguard.frauddetection.entry.controller;
+import com.omarazzam.paymentguard.frauddetection.entry.entity.PaymentTransaction;
 import com.omarazzam.paymentguard.frauddetection.entry.exception.LicenseIsNotValidException;
 import com.omarazzam.paymentguard.frauddetection.entry.exception.NoServiceInstanceFoundException;
 import com.omarazzam.paymentguard.frauddetection.entry.service.RequestHandlerImpl;
@@ -16,8 +17,9 @@ public class EntryController {
     RequestHandlerImpl requestHandler;
 
     @PostMapping("/entry-point")
-    public ResponseEntity<?> getEntryPoint(@RequestBody String message) {
+    public ResponseEntity<?> getEntryPoint(@RequestBody PaymentTransaction message) {
         try {
+            log.info(message.toString());
             requestHandler.HandleValidatorRequest(message);
                return ResponseEntity.ok("Valid License");
         }catch (NoServiceInstanceFoundException e ) {

@@ -1,6 +1,8 @@
 package com.omarazzam.paymentguard.frauddetection.entry.service;
 
 
+import com.omarazzam.paymentguard.frauddetection.entry.entity.LicenseDTO;
+import com.omarazzam.paymentguard.frauddetection.entry.entity.PaymentTransaction;
 import com.omarazzam.paymentguard.frauddetection.entry.exception.NoServiceInstanceFoundException;
 import lombok.Builder;
 import lombok.extern.log4j.Log4j2;
@@ -27,7 +29,7 @@ public class LicenceValidatorRequestHandlerService {
 
 
 
-    public void sendRequestToLicenseValidator(String message) throws Exception {
+    public void sendRequestToLicenseValidator(PaymentTransaction message) throws Exception {
             log.info(" Sending request to license validator {} " , message);
 
 
@@ -43,9 +45,12 @@ public class LicenceValidatorRequestHandlerService {
     }
 
 
-    private  void send(String message) throws Exception {
+    private  void send(PaymentTransaction message) throws Exception {
+            LicenseDTO licenseDTO = LicenseDTO.builder().payType(message.getPayType()).referenceNumber(message.getReferenceNumber()).build();
+            log.info(licenseDTO.getPayType().toString());
+            log.info(licenseDTO.getReferenceNumber());
             String url  = "http://LICENCE-VALIDATOR/license-service/validate";
-            ResponseEntity<?> response =   restTemplate.postForEntity( url, message , String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(url, licenseDTO, String.class);
     }
 
 

@@ -1,5 +1,6 @@
 package com.omarazzam.paymentguard.frauddetection.entry.service;
 
+import com.omarazzam.paymentguard.frauddetection.entry.entity.PaymentTransaction;
 import com.omarazzam.paymentguard.frauddetection.entry.exception.LicenseIsNotValidException;
 import com.omarazzam.paymentguard.frauddetection.entry.exception.NoServiceInstanceFoundException;
 import lombok.extern.log4j.Log4j2;
@@ -19,7 +20,7 @@ public class RequestHandlerImpl implements  RequestHandler {
 
 
     @Override
-    public void HandleValidatorRequest(String message) throws LicenseIsNotValidException, NoServiceInstanceFoundException, Exception {
+    public void HandleValidatorRequest(PaymentTransaction message) throws LicenseIsNotValidException, NoServiceInstanceFoundException, Exception {
         try {
             licenceValidatorRequestHandlerService.sendRequestToLicenseValidator(message);
         }catch (NoServiceInstanceFoundException | LicenseIsNotValidException e){
