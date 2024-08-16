@@ -47,7 +47,7 @@ public class ValidateLicenseService {
     public boolean isValidLicense(Licence message) throws Exception {
 
         if (message == null)
-            throw new Exception("Message is Empty ");
+            throw new Exception("Message cant be Empty");
 
 
         readFile();

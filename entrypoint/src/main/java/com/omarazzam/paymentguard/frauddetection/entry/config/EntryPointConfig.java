@@ -23,6 +23,7 @@
     @EnableAsync
     @EnableEurekaClient
     public class EntryPointConfig {
+
         @Bean
         @LoadBalanced
         public RestTemplate restTemplate() {

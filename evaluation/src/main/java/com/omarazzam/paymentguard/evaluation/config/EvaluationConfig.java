@@ -3,9 +3,12 @@ package com.omarazzam.paymentguard.evaluation.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.netflix.discovery.DiscoveryClient;
 import com.omarazzam.paymentguard.evaluation.entity.PaymentTransactionEvaluation;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.jms.pool.PooledConnectionFactory;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
@@ -13,13 +16,24 @@ import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.HashMap;
 import java.util.Map;
 
 
 @Configuration
+@EnableEurekaClient
 @EnableJms
 public class EvaluationConfig {
+
+
+    @Bean
+    public Map<String, ?> cache() {
+        return new HashMap<>();
+    }
+
+
 
     @Bean
     public ActiveMQConnectionFactory activeMQConnectionFactory() {
@@ -62,5 +76,9 @@ public class EvaluationConfig {
         return mapper;
     }
 
+    @Bean
+    RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
 }

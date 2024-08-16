@@ -16,6 +16,7 @@
 		<module>discoveryserver</module>
 		<module>licencevalidator</module>
 		<module>evaluation</module>
+		<module>scenariofactory</module>
 	</modules>
 	<packaging>pom</packaging>
 	<description>Demo project for Spring Boot</description>

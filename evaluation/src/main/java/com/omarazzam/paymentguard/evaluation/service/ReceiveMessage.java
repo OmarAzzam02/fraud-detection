@@ -16,7 +16,6 @@ public class ReceiveMessage {
     @JmsListener(destination = "messages")
     public void receiveMessage(PaymentTransactionEvaluation message) {
         try {
-     //   PaymentTransactionEvaluation message = objectMapper.readValue(jsonMessage, PaymentTransactionEvaluation.class);
         log.info("Received message from activeMQ : " + message.toString());
         }catch (Exception e){
             log.error(e);
