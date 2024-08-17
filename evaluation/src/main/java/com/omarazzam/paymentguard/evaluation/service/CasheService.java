@@ -17,7 +17,7 @@ public class CasheService {
 
     public void addSenarioToCashe(Map<String, ?> senario) {
 
-         log.info("adding to Info");
+         log.info("adding to Cashe");
          // if the scenario name exists in the cashe update it override it
 
 

@@ -13,7 +13,7 @@ public class UserScenarioDAOImpl implements UserScenarioDAO {
 
     public void insertScenario(Map<String , ?> scenarioMap) {
         try {
-            log.info("Inserting user scenario");
+            log.info("Inserting user scenario in the database");
             log.info("scenarioMap: " + scenarioMap);
               //  userScenarioDAO.save(scenarioMap);
 

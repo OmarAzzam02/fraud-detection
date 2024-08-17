@@ -36,6 +36,8 @@ public class UserScenarioServiceImpl implements UserScenarioService {
 
       public void CreateUserScenario( @NonNull String jsonScenario ) throws Exception{
           try {
+
+          log.info("in scenario creation ");
           Map<String , ?> scenario = objectMapper.readValue(jsonScenario, Map.class);
           addScenarioToDataBase(scenario);
           sendToEvaluation(scenario);
@@ -54,13 +56,18 @@ public class UserScenarioServiceImpl implements UserScenarioService {
 
 
         public void sendToEvaluation( @NonNull Map<String , ?> scenario ) throws Exception{
+
+            log.info("sending to evaluation cashe");
             List<ServiceInstance> serviceInstances = discoveryClient.getInstances( "EVALUATION" );
             if(serviceInstances.isEmpty())
                 return;
 
+
             String url = serviceInstances.get(0).getUri().toURL() + "/add-user-scenario-to-cashe";
-            ResponseEntity<?> response =  restTemplate.getForEntity(url, String.class);
+            ResponseEntity<?> response =  restTemplate.postForEntity(url, scenario, String.class);
             // if response fails
+
+
             // will save to schedualar
             // then will send it again after a scpecific amount of time
 

@@ -25,6 +25,9 @@ public class UserScenarioRetrievalService {
     @PostConstruct
     void init(){
         try {
+
+
+            log.info("getting the info from scenarios in init function");
             List<ServiceInstance> list = discoveryClient.getInstances("SCENARIO-FACTORY");
             log.info(list.get(0).getUri().toURL());
             String url = list.get(0).getUri().toURL()+"/retrieve-scenarios";
@@ -39,6 +42,4 @@ public class UserScenarioRetrievalService {
     }
 
 
-    public void getScenarios() {
-    }
 }

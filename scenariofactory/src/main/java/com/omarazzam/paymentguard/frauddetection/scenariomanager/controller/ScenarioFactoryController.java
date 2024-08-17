@@ -31,7 +31,7 @@ public class ScenarioFactoryController {
 
     @GetMapping("/retrieve-scenarios")
     ResponseEntity<?> retrieveScenarios(){
-        log.info("in retrieve Scenario");
+        log.info("in retrieve Scenario controller");
         return ResponseEntity.ok().body("info for evaluation");
     }
 }
