@@ -1,11 +1,16 @@
 spring:
   application:
     name: licence-validator
+  cloud:
+    loadbalancer:
+      cache:
+        ttl: 60s
 
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+
 
 
 server:

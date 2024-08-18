@@ -6,7 +6,6 @@ server:
 spring:
   application:
     name: scenario-factory
-
   datasource:
     url: jdbc:oracle:thin:@//localhost:1521/XE
     username: system
@@ -22,8 +21,14 @@ spring:
         dialect: org.hibernate.dialect.Oracle12cDialect
         format_sql: true
     show-sql: true
+  cloud:
+    loadbalancer:
+      cache:
+        ttl: 60s
 
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+
+

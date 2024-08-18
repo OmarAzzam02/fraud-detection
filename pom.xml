@@ -17,7 +17,9 @@
 		<module>licencevalidator</module>
 		<module>evaluation</module>
 		<module>scenariofactory</module>
-	</modules>
+        <module>configserver</module>
+        <module>apigateway</module>
+    </modules>
 	<packaging>pom</packaging>
 	<description>Demo project for Spring Boot</description>
 	<properties>
