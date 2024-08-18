@@ -2,7 +2,6 @@ spring:
   application:
     name: entrypoint
 
-
   cloud:
     loadbalancer:
       cache:
@@ -14,15 +13,13 @@ spring:
     pool:
       enabled: true
       max-connections: 10
+ # config:
+ #   import: configserver:http://localhost:8888
 
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
-
-
-
-
 
 server:
   port: 8080
