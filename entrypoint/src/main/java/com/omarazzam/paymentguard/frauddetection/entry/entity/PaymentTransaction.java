@@ -1,6 +1,7 @@
 package com.omarazzam.paymentguard.frauddetection.entry.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -31,6 +32,6 @@ public class PaymentTransaction  implements Serializable {
      private TransactionStatus status;
      @JsonProperty("transaction_date")
      private LocalDateTime transactionDate;
-
-
+     @JsonProperty("address")
+     private Address address;
 }

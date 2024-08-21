@@ -2,6 +2,7 @@ package com.omarazzam.paymentguard.evaluation.service;
 
 
 
+import com.omarazzam.paymentguard.evaluation.entity.senario.UserSenario;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.List;
 
 @Log4j2
@@ -20,6 +22,10 @@ public class UserScenarioRetrievalService {
     @Autowired
     RestTemplate restTemplate;
 
+    @Autowired
+    EvaluateMessageService evaluateMeesageService;
+    @Autowired
+    UserSenarioCashe userSenarioCashe;
     @Autowired
     DiscoveryClient discoveryClient;
     @PostConstruct
@@ -31,13 +37,14 @@ public class UserScenarioRetrievalService {
             List<ServiceInstance> list = discoveryClient.getInstances("SCENARIO-FACTORY");
             log.info(list.get(0).getUri().toURL());
             String url = list.get(0).getUri().toURL()+"/retrieve-scenarios";
-            ResponseEntity<?> response =  restTemplate.getForEntity(url, String.class);
-            log.info(response.getStatusCode());
+            ResponseEntity<UserSenario> response =  restTemplate.getForEntity(url, UserSenario.class);
+            log.info(response.getStatusCode() +  "  "  + response.getBody().getClass() + response.getBody());
+            userSenarioCashe.addCollectionOfScenariosToCashe(Arrays.asList(response.getBody()));
 
-            // cashee the senarios
+
 
         }catch (Exception e){
-            e.printStackTrace();
+            log.error(e);
         }
     }
 

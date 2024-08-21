@@ -1,4 +1,4 @@
-package com.omarazzam.paymentguard.evaluation.entity;
+package com.omarazzam.paymentguard.evaluation.entity.message;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -32,6 +32,8 @@ public class PaymentTransactionEvaluation implements Serializable {
     private TransactionStatus status;
     @JsonProperty("transaction_date")
     private LocalDateTime transactionDate;
+    @JsonProperty("address")
+    private Address address;
 
 
 }

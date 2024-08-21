@@ -1,6 +1,6 @@
 package com.omarazzam.paymentguard.evaluation.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.omarazzam.paymentguard.evaluation.entity.PaymentTransactionEvaluation;
+import com.omarazzam.paymentguard.evaluation.entity.message.PaymentTransactionEvaluation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
@@ -11,15 +11,21 @@ import org.springframework.stereotype.Service;
 public class ReceiveMessage {
 
     @Autowired
+    EvaluateMessageService evaluateMeesageService;
+
+    @Autowired
     ObjectMapper objectMapper;
 
     @JmsListener(destination = "messages")
     public void receiveMessage(PaymentTransactionEvaluation message) {
         try {
+
         log.info("Received message from activeMQ : " + message.toString());
         }catch (Exception e){
             log.error(e);
         }
+
+       evaluateMeesageService.evaluateMessage(message);
 
     }
 

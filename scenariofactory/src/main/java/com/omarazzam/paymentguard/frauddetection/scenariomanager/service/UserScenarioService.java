@@ -1,6 +1,7 @@
 package com.omarazzam.paymentguard.frauddetection.scenariomanager.service;
 
 
+import com.omarazzam.paymentguard.frauddetection.scenariomanager.dto.UserSenario;
 import lombok.NonNull;
 import org.springframework.scheduling.annotation.Async;
 
@@ -8,8 +9,9 @@ import java.util.Map;
 
 public interface UserScenarioService {
     
-     void CreateUserScenario( @NonNull String jsonScenario ) throws Exception;
-     void addScenarioToDataBase( @NonNull Map<String , ?> jsonScenario ) throws Exception;
+     void CreateUserScenario( @NonNull UserSenario  senario ) throws Exception;
      @Async
-     void sendToEvaluation( @NonNull Map<String , ?> scenario ) throws Exception;
+     void addScenarioToDataBase( @NonNull UserSenario  senario) throws Exception;
+
+     void sendToEvaluation( @NonNull UserSenario  senario ) throws Exception;
 }

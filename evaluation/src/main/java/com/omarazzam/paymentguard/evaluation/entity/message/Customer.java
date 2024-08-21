@@ -1,4 +1,4 @@
-package com.omarazzam.paymentguard.evaluation.entity;
+package com.omarazzam.paymentguard.evaluation.entity.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
