@@ -1,81 +1,85 @@
 package com.omarazzam.paymentguard.evaluation.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
+import com.omarazzam.paymentguard.evaluation.entity.condition.FullCondition;
+import com.omarazzam.paymentguard.evaluation.entity.connector.AndConnector;
+import com.omarazzam.paymentguard.evaluation.entity.connector.Connector;
+import com.omarazzam.paymentguard.evaluation.entity.connector.OrConnector;
 import com.omarazzam.paymentguard.evaluation.entity.message.PaymentTransactionEvaluation;
-import com.omarazzam.paymentguard.evaluation.entity.senario.ConditionConnector;
-import com.omarazzam.paymentguard.evaluation.entity.senario.ConditionDetails;
-import com.omarazzam.paymentguard.evaluation.entity.senario.UserSenario;
-import com.omarazzam.paymentguard.evaluation.service.testsenario.ParseConditionService;
-import com.omarazzam.paymentguard.evaluation.service.testsenario.connector.Connector;
-import com.omarazzam.paymentguard.evaluation.service.testsenario.connector.ConnectorFactory;
-import com.omarazzam.paymentguard.evaluation.service.testsenario.operator.Operator;
-import com.omarazzam.paymentguard.evaluation.service.testsenario.operator.OperatorFactory;
+import com.omarazzam.paymentguard.evaluation.entity.scenario.UnifiedConditionDLL;
+import com.omarazzam.paymentguard.evaluation.entity.scenario.UnifiedConditionNode;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
-public class EvaluateMessageService     {
-
+public class EvaluateMessageService {
     @Autowired
     private UserSenarioCashe cache;
 
     @Autowired
-    private ParseConditionService parseConditionService;
+    ObjectMapper objectMapper;
 
-    @Autowired
-    private ConnectorFactory connectorFactory;
-
-    @Autowired
-    private OperatorFactory operatorFactory;
 
     public void evaluateMessage(PaymentTransactionEvaluation message) {
-        boolean scenarioMatched = false;
+        log.info("Evaluate message");
+
+        boolean isFraudulent = cache.getCashe().parallelStream()
+                .anyMatch(scenario -> evaluate(message, scenario));
+
+        if (isFraudulent) {
+           log.info("Message is fraud  {} " , message.getId());
+           //save to DB ASync
+        }
+     else   log.info("Not Fraud");
+
+    }
 
 
-        for (UserSenario scenario : cache.getCashe()) {
-            boolean scenarioEvaluationResult = evaluateScenario(scenario, message);
+    @Async
+    public boolean evaluate(PaymentTransactionEvaluation message, UnifiedConditionDLL scenario) {
 
-            if (scenarioEvaluationResult) {
-                scenarioMatched = true;
-                break;
+        UnifiedConditionNode curr = scenario.getHead();
+        boolean finalResult = false;
+        while (curr != null) {
+
+            try {
+                FullCondition condition = curr.getData().getFullCondition();
+                Object messageFieldValue = getMessageValue(message, condition.getCondition().getField());
+                boolean conditionResult = condition.getCondition().evaluate(messageFieldValue);
+               // boolean skip = handleConnectorLogic(conditionResult, condition.getConnector());
+                if (curr.getData() == scenario.getHead().getData())
+                    finalResult = conditionResult;
+                else
+                    finalResult = condition.getConnector().evaluate(finalResult, conditionResult);
+
+
+                curr = curr.getNext();
+            } catch (Exception ex) {
+                log.error(ex);
             }
         }
 
-        if (scenarioMatched) {
-            log.info("Transaction needs to be locked. must save in the database");
-        } else {
-            log.info("Transaction evaluated, no scenario applied. OK NO Fraudoooo");
-        }
+        return finalResult;
     }
 
-    private boolean evaluateScenario(UserSenario scenario, PaymentTransactionEvaluation message) {
-        boolean prevResult = false;
 
-        ConditionDetails firstCondition = findConditionById(scenario, scenario.getCondition().getConnectors().get(0).getLeftId());
-        prevResult = evaluateCondition(firstCondition, message);
+    private Object getMessageValue(PaymentTransactionEvaluation message, String fieldToSearch) throws JsonProcessingException {
+        String messageJson = objectMapper.writeValueAsString(message);
+        Object value = JsonPath.read(messageJson, fieldToSearch);
 
-        for (ConditionConnector connector : scenario.getCondition().getConnectors()) {
-            ConditionDetails rightCondition = findConditionById(scenario, connector.getRightId());
-
-            boolean rightConditionResult = evaluateCondition(rightCondition, message);
-            Connector connectorLogic = connectorFactory.createConnector(connector.getConnector().trim());
-
-            prevResult = connectorLogic.evaluate(prevResult, rightConditionResult);
-        }
-
-        return prevResult;
+        return value;
     }
 
-    private ConditionDetails findConditionById(UserSenario scenario, int conditionId) {
-        return scenario.getCondition().getDetails().stream()
-                .filter(cond -> cond.getConditionId() == conditionId)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Condition not found for ID: " + conditionId));
+
+    private boolean handleConnectorLogic(boolean conditionResult, Connector connector) {
+        return (!conditionResult && connector instanceof AndConnector) ||
+                (conditionResult && connector instanceof OrConnector);
     }
 
-    private boolean evaluateCondition(ConditionDetails condition, PaymentTransactionEvaluation message) {
-        Operator operator = operatorFactory.createOperator(condition.getConditionOperator().toString().trim());
-        return parseConditionService.parseConditionThenEvaluate(operator, condition, message);
-    }
+
 }

@@ -35,5 +35,4 @@ public class PaymentTransactionEvaluation implements Serializable {
     @JsonProperty("address")
     private Address address;
 
-
 }

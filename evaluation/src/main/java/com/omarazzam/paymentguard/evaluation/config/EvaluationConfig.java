@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.omarazzam.paymentguard.evaluation.entity.message.PaymentTransactionEvaluation;
 
-import com.omarazzam.paymentguard.evaluation.entity.senario.UserSenario;
-import com.omarazzam.paymentguard.evaluation.service.testsenario.connector.Connector;
+import com.omarazzam.paymentguard.evaluation.entity.scenario.UnifiedConditionDLL;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.jms.pool.PooledConnectionFactory;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -17,6 +16,7 @@ import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -28,13 +28,14 @@ import java.util.Map;
 @Configuration
 @EnableEurekaClient
 @EnableJms
+@EnableAsync
 public class EvaluationConfig {
 
 
 
 
     @Bean
-    public List<UserSenario> userScenarios() {
+    public List<UnifiedConditionDLL> userScenarios() {
         return new ArrayList<>();
     }
 

@@ -1,73 +1,52 @@
 package com.omarazzam.paymentguard.frauddetection.licencevalidator.service;
 
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.omarazzam.paymentguard.frauddetection.licencevalidator.entity.Licence;
-import com.omarazzam.paymentguard.frauddetection.licencevalidator.entity.PayType;
+import com.omarazzam.paymentguard.frauddetection.licencevalidator.entity.ValidRefrence;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.util.*;
 
+import java.io.IOException;
+import java.util.List;
 
 @Log4j2
 @Service
 public class ValidateLicenseService {
 
-
-
-    private Map<String, List<String>> validLicenses;
+    private List<ValidRefrence> validReferences;
 
     @Autowired
-    private final ObjectMapper objectMapper;
+    private  ObjectMapper objectMapper;
 
-    public ValidateLicenseService(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+
+
+    private void readFile() {
+        try {
+            // Reading the JSON as a list of ValidRefrence objects
+            ClassPathResource resource = new ClassPathResource("data.json");
+            validReferences = objectMapper.readValue(resource.getInputStream(), new TypeReference<List<ValidRefrence>>() {});
+            log.info("Valid references loaded: {}", validReferences);
+        } catch (IOException e) {
+            log.error("Error reading JSON file", e);
+        }
     }
 
-
-        private void readFile() {
-            try {
-
-                ClassPathResource resource = new ClassPathResource("data.json");
-                Map<String, List<String>> temp = objectMapper.readValue(resource.getInputStream(), new TypeReference<Map<String, List<String>>>() {});
-                validLicenses = Collections.unmodifiableMap(temp);
-                log.info("Valid licenses loaded: {}", validLicenses);
-            } catch (IOException e) {
-                log.error("Error reading JSON file", e);
-            }
-        }
-
-
     public boolean isValidLicense(Licence message) throws Exception {
-
-        if (message == null)
-            throw new Exception("Message cant be Empty");
-
+        if (message == null || message.getPayType() == null || message.getReferenceNumber() == null || message.getReferenceNumber().length() < 4) {
+            throw new Exception("Invalid message or missing data");
+        }
 
         readFile();
         String payType = message.getPayType().toString();
-
-        for (Map.Entry<String, List<String>> entry : validLicenses.entrySet()) {
-            String key = entry.getKey();
-            List<String> validPrefixes = entry.getValue();
-            if (payType != null && payType.toUpperCase().startsWith(key)) {
-                for (String prefix : validPrefixes) {
-                    if (payType.length() >= 4 && message.getReferenceNumber().substring(0, 4).startsWith(prefix)) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
+        String referencePrefix = message.getReferenceNumber().substring(0, 4);
 
 
+        return validReferences.stream()
+                .filter(validRef -> validRef.getPayType().toString().equalsIgnoreCase(payType))
+                .flatMap(validRef -> validRef.getReff().stream())
+                .anyMatch(referencePrefix::equalsIgnoreCase);
     }
-
 }

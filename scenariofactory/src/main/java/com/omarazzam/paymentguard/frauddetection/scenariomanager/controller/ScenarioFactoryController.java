@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class ScenarioFactoryController {
     UserScenarioServiceImpl userScenarioService;
 
     @PostMapping("/create")
-    ResponseEntity<?> CreateUserScenario(@RequestBody UserSenario senario){
-        log.info("Recieved scenario: " + senario);
+    ResponseEntity<?> CreateUserScenario(@RequestBody UserScenario senario){
+        log.info("Recieved scenario: {} ", senario);
         try {
             if (senario.getCondition()==null || senario.getName() == null)
                 throw new Exception("Scenario name cannot be empty");
@@ -38,36 +39,46 @@ public class ScenarioFactoryController {
         log.info("in retrieve Scenario controller");
         try {
 
-            UserSenario userSenario = getUserScenario();
-
-            return ResponseEntity.ok().body(userSenario);
-
+            List<UserScenario>  scenarios = getScenarios();
+            return ResponseEntity.ok().body(scenarios);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
     }
 
-    UserSenario getUserScenario () {
-        return UserSenario.builder()
-                .name("Mobile Payment Validation")
-                .senarioType(PayType.MOBILE)
-                .condition(
-                        Condition.builder()
-                                .conditionStr("Amount > 50 & pay_type = MOBILE | payment_method = Online Banking & status = PENDING")
-                                .connectors(Arrays.asList(
-                                        new ConditionConnector("&", 201, 202),
-                                        new ConditionConnector("|", 202, 203),
-                                        new ConditionConnector("&", 203, 204)
-                                ))
-                                .details(Arrays.asList(
-                                        new ConditionDetails(201, "amount", "50", ">", "DECIMAL"),
-                                        new ConditionDetails(202, "pay_type", "MOBILE", "=", "STRING"),
-                                        new ConditionDetails(203, "payment_method", "Online Banking", "=", "STRING"),
-                                        new ConditionDetails(204, "status", "PENDING", "=", "STRING")
-                                ))
-                                .build()
-                )
-                .build();
+    List<UserScenario> getScenarios() {
+        List<UserScenario> scenarios = new ArrayList<>();
+
+        for (int i = 1; i <= 1; i++) {
+            UserScenario scenario = UserScenario.builder()
+                    .name("Scenario " + i)
+                    .senarioType(PayType.MOBILE)
+                    .condition(
+                            Condition.builder()
+                                    .conditionStr("Amount > " + 1000 + " & pay_type = MOBILE & status = PENDING")
+                                    .connectors(Arrays.asList(
+                                            new ConditionConnector("&", 101 + i, 102 + i),
+                                            new ConditionConnector("&", 102 + i, 103 + i),
+                                            new ConditionConnector("&", 103 + i, 104 + i )
+
+                                    ))
+                                    .details(Arrays.asList(
+                                            new ConditionDetails(101 + i, "amount", String.valueOf(1000), ">", "DECIMAL"),
+                                            new ConditionDetails(102 + i, "pay_type", "MOBILE", "=", "STRING"),
+                                            new ConditionDetails(103 + i, "status", "PENDING", "=", "STRING"),
+                                            new ConditionDetails(104 + i, "address.country", "Jordan", "=", "STRING")
+
+
+                                    ))
+                                    .build()
+                    )
+                    .build();
+
+            scenarios.add(scenario);
         }
+        log.info("done intializong scenarios");
+        return scenarios;
     }
+
+}

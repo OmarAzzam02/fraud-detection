@@ -1,4 +1,4 @@
-package com.omarazzam.paymentguard.evaluation.entity.senario;
+package com.omarazzam.paymentguard.evaluation.dto.scenarioDTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConditionDetails {
+public class ConditionDetailsDTO {
 
     @JsonProperty("condition_id")
     int conditionId;

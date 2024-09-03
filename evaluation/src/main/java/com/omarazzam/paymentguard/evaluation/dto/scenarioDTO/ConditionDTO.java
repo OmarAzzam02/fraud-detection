@@ -1,4 +1,4 @@
-package com.omarazzam.paymentguard.evaluation.entity.senario;
+package com.omarazzam.paymentguard.evaluation.dto.scenarioDTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -12,12 +12,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Condition {
+public class ConditionDTO {
 
     @JsonProperty("conditionString")
     private String conditionStr;
     @JsonProperty("condition_connectors")
-    private List<ConditionConnector> connectors;
+    private List<ConditionConnectorDTO> connectors;
     @JsonProperty("condition_details")
-    private List<ConditionDetails> details;
+    private List<ConditionDetailsDTO> details;
 }

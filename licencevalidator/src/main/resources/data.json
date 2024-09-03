@@ -1,5 +1,14 @@
-{
-  "MOBILE" : ["elib" , "oile" , "obil"],
-  "CARD"   : ["ardc" , "rdac" , "darc"],
-  "WEBSITE": ["ewte" , "etis" , "sbit"]
-}
+[
+  {
+    "payType": "MOBILE",
+    "reff": ["elib", "oile", "obil"]
+  },
+  {
+    "payType": "CARD",
+    "reff": ["ardc", "rdac", "darc"]
+  },
+  {
+    "payType": "WEBSITE",
+    "reff": ["ewte", "etis", "sbit"]
+  }
+]
