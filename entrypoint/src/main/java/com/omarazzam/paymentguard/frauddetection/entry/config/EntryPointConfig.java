@@ -1,27 +1,34 @@
     package com.omarazzam.paymentguard.frauddetection.entry.config;
 
 
-    import com.fasterxml.jackson.databind.ObjectMapper;
-    import com.fasterxml.jackson.databind.SerializationFeature;
+
+
     import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+    import com.omarazzam.paymentguard.frauddetection.entry.entity.PaymentTransaction;
     import org.apache.activemq.ActiveMQConnectionFactory;
     import org.apache.activemq.jms.pool.PooledConnectionFactory;
+    import org.apache.kafka.clients.producer.ProducerConfig;
+    import org.apache.kafka.common.serialization.StringSerializer;
     import org.springframework.cloud.client.loadbalancer.LoadBalanced;
     import org.springframework.cloud.client.loadbalancer.LoadBalanced;
     import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
     import org.springframework.context.annotation.Bean;
     import org.springframework.context.annotation.Configuration;
-    import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-    import org.springframework.jms.core.JmsTemplate;
-    import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
-    import org.springframework.jms.support.converter.MessageConverter;
-    import org.springframework.jms.support.converter.MessageType;
+
+    import org.springframework.kafka.annotation.EnableKafka;
+    import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+    import org.springframework.kafka.core.KafkaTemplate;
+    import org.springframework.kafka.core.ProducerFactory;
     import org.springframework.scheduling.annotation.EnableAsync;
     import org.springframework.web.client.RestTemplate;
+
+    import java.util.HashMap;
+    import java.util.Map;
 
     @Configuration
     @EnableAsync
     @EnableEurekaClient
+    @EnableKafka
     public class EntryPointConfig {
 
         @Bean
@@ -31,41 +38,26 @@
         }
 
 
+
         @Bean
-        public ActiveMQConnectionFactory activeMQConnectionFactory() {
-            return new ActiveMQConnectionFactory("tcp://localhost:61616");
+        public ProducerFactory<String, String> producerFactory() {
+            Map<String, Object> configProps = new HashMap<>();
+            configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"); // Replace with your Kafka server address
+            configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+            configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+            return new DefaultKafkaProducerFactory<>(configProps);
         }
 
         @Bean
-        public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(ActiveMQConnectionFactory activeMQConnectionFactory) {
-            DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-            factory.setConnectionFactory(activeMQConnectionFactory);
-            return factory;
+        public KafkaTemplate<String, String> kafkaTemplate() {
+            return new KafkaTemplate<>(producerFactory());
         }
 
-        @Bean
-        public JmsTemplate jmsTemplate(ActiveMQConnectionFactory activeMQConnectionFactory, MessageConverter messageConverter) {
-            JmsTemplate jmsTemplate = new JmsTemplate(activeMQConnectionFactory);
-            jmsTemplate.setMessageConverter(messageConverter);
-            return jmsTemplate;
-        }
 
-        @Bean
-        public MessageConverter messageConverter() {
-            MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-            converter.setTargetType(MessageType.TEXT);
-            converter.setTypeIdPropertyName("_type");
-            converter.setObjectMapper(objectMapper());
-            return converter;
-        }
 
-        @Bean
-        public ObjectMapper objectMapper() {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JavaTimeModule());
-            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            return mapper;
-        }
+
+
+
     }
 
 

@@ -7,14 +7,16 @@ spring:
       cache:
         ttl: 60s
 
-  activemq:
-    user: admin
-    password: admin
-    pool:
-      enabled: true
-      max-connections: 10
+
+ # the config is ready for use but is not activated
  # config:
  #   import: configserver:http://localhost:8888
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 eureka:
   client:

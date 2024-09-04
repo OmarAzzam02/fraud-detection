@@ -10,12 +10,6 @@ spring:
       cache:
         ttl: 60s
 
-  activemq:
-    user: admin
-    password: admin
-    pool:
-      enabled: true
-      max-connections: 10
 
   datasource:
     url: jdbc:oracle:thin:@//localhost:1521/XE
@@ -32,6 +26,7 @@ spring:
         dialect: org.hibernate.dialect.Oracle12cDialect
         format_sql: true
     show-sql: true
+
 
 eureka:
   client:
