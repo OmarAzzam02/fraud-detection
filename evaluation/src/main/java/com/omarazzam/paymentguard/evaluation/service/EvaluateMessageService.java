@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Log4j2
 @Service
 public class EvaluateMessageService {
@@ -25,42 +27,31 @@ public class EvaluateMessageService {
     ObjectMapper objectMapper;
 
 
-    public void evaluateMessage(PaymentTransactionEvaluation message) {
-        log.info("Evaluate message");
-
-        boolean isFraudulent = cache.getCashe().parallelStream()
-                .anyMatch(scenario -> evaluate(message, scenario));
-
-        if (isFraudulent) {
-           log.info("Message is fraud  {} " , message.getId());
-           //save to DB ASync
-        }
-     else   log.info("Not Fraud");
-
-    }
 
 
-    @Async
+
     public boolean evaluate(PaymentTransactionEvaluation message, UnifiedConditionDLL scenario) {
 
         UnifiedConditionNode curr = scenario.getHead();
         boolean finalResult = false;
-        while (curr != null) {
 
+
+        FullCondition headCondition = curr.getData().getFullCondition();
+        Object headMessageFieldValue = getMessageValue(message, headCondition.getCondition().getField());
+        boolean headConditionResult = headCondition.getCondition().evaluate(headMessageFieldValue);
+        curr = curr.getNext();
+
+
+        while (curr != null) {
             try {
                 FullCondition condition = curr.getData().getFullCondition();
                 Object messageFieldValue = getMessageValue(message, condition.getCondition().getField());
                 boolean conditionResult = condition.getCondition().evaluate(messageFieldValue);
-               // boolean skip = handleConnectorLogic(conditionResult, condition.getConnector());
-                if (curr.getData() == scenario.getHead().getData())
-                    finalResult = conditionResult;
-                else
-                    finalResult = condition.getConnector().evaluate(finalResult, conditionResult);
-
+                finalResult = condition.getConnector().evaluate(finalResult, conditionResult);
 
                 curr = curr.getNext();
             } catch (Exception ex) {
-                log.error(ex);
+                ex.printStackTrace();
             }
         }
 
@@ -68,11 +59,18 @@ public class EvaluateMessageService {
     }
 
 
-    private Object getMessageValue(PaymentTransactionEvaluation message, String fieldToSearch) throws JsonProcessingException {
+
+    private Object getMessageValue(PaymentTransactionEvaluation message, String fieldToSearch)  {
+        try {
         String messageJson = objectMapper.writeValueAsString(message);
         Object value = JsonPath.read(messageJson, fieldToSearch);
+         return value;
 
-        return value;
+        }catch (Exception ex){
+            log.error(ex.getMessage());
+            return "";
+        }
+
     }
 
 

@@ -5,6 +5,6 @@ import com.omarazzam.paymentguard.frauddetection.entry.exception.LicenseIsNotVal
 import com.omarazzam.paymentguard.frauddetection.entry.exception.NoServiceInstanceFoundException;
 
 public interface RequestHandler {
-     void HandleValidatorRequest(PaymentTransaction message) throws LicenseIsNotValidException , NoServiceInstanceFoundException , Exception;
+     PaymentTransaction HandleValidatorRequest(PaymentTransaction message) throws LicenseIsNotValidException , NoServiceInstanceFoundException , Exception;
 
 }

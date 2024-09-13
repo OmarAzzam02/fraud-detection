@@ -8,12 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class EqualOperator implements Operator<String> {
 
-
-
     @Override
     public boolean evaluate(String messageValue, String conditionValue) {
               boolean res =   messageValue.equals(conditionValue);
-              log.info(" equal operator  {}" , res);
+
         return res;
     }
 }

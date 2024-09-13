@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.omarazzam.paymentguard.frauddetection.entry.entity.PaymentTransaction;
 import org.springframework.scheduling.annotation.Async;
 
+import java.util.concurrent.CompletableFuture;
+
 public interface SendMessageToEvaluation {
-
-
-     void sendMessage(PaymentTransaction message) throws JsonProcessingException;
+    PaymentTransaction sendMessage(PaymentTransaction message);
 }

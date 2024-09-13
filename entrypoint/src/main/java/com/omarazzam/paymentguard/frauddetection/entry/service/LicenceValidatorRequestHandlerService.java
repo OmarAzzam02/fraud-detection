@@ -29,9 +29,8 @@ public class LicenceValidatorRequestHandlerService {
 
 
 
-    public void sendRequestToLicenseValidator(PaymentTransaction message) throws Exception {
+    public PaymentTransaction sendRequestToLicenseValidator(PaymentTransaction message) throws Exception {
             log.info(" Sending request to license validator {} " , message);
-
 
              try {
                  send(message);
@@ -40,8 +39,7 @@ public class LicenceValidatorRequestHandlerService {
                  throw e;
              }
 
-         // async
-        sendMessageToEvaluationImpl.sendMessage(message);
+       return  sendMessageToEvaluationImpl.sendMessage(message);
     }
 
 

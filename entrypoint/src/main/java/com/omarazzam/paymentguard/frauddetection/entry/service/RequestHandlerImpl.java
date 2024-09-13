@@ -20,9 +20,9 @@ public class RequestHandlerImpl implements  RequestHandler {
 
 
     @Override
-    public void HandleValidatorRequest(PaymentTransaction message) throws LicenseIsNotValidException, NoServiceInstanceFoundException, Exception {
+    public PaymentTransaction HandleValidatorRequest(PaymentTransaction message) throws LicenseIsNotValidException, NoServiceInstanceFoundException, Exception {
         try {
-            licenceValidatorRequestHandlerService.sendRequestToLicenseValidator(message);
+          return  licenceValidatorRequestHandlerService.sendRequestToLicenseValidator(message);
         }catch (NoServiceInstanceFoundException | LicenseIsNotValidException e){
             log.error(e);
             throw e;

@@ -14,7 +14,7 @@ public class GreaterOperator implements  Operator<BigDecimal>{
     public boolean evaluate(BigDecimal messageValue, BigDecimal conditionValue) {
 
               boolean res =    messageValue.compareTo(conditionValue) > 0;
-              log.info("greater than  {} " , res);
+
         return res;
     }
 }
