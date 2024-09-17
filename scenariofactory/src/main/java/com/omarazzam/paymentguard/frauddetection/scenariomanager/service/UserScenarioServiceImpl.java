@@ -19,18 +19,16 @@ import java.util.List;
 public class UserScenarioServiceImpl implements UserScenarioService {
 
     @Autowired
-    DiscoveryClient discoveryClient;
+     private DiscoveryClient discoveryClient;
 
     @Autowired
-    RestTemplate restTemplate;
+     private RestTemplate restTemplate;
 
     @Autowired
-    UserScenarioDAO db;
+     private UserScenarioDAO db;
 
-    @Autowired
-    ObjectMapper objectMapper;
 
-      public void CreateUserScenario(  UserScenario senario ) throws Exception{
+      public void CreateUserScenario( final UserScenario senario ) throws Exception{
           try {
           log.info("in scenario creation ");
           addScenarioToDataBase(senario);
@@ -40,14 +38,14 @@ public class UserScenarioServiceImpl implements UserScenarioService {
               throw e;
           }
         }
-        public void addScenarioToDataBase( UserScenario senario){
+        public void addScenarioToDataBase( final UserScenario senario){
           // add to database
             db.insertScenario(senario);
         }
 
 
 
-        public void sendToEvaluation(  UserScenario senario ) throws Exception{
+        public void sendToEvaluation( final UserScenario senario ) throws Exception{
 
             log.info("sending to evaluation cashe");
             List<ServiceInstance> serviceInstances = discoveryClient.getInstances( "EVALUATION" );

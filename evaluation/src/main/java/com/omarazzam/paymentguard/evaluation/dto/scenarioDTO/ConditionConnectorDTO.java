@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ConditionConnectorDTO {
     @JsonProperty("condition_connector")
-    String connector;
+     private String connector;
     @JsonProperty("condition_left_id")
     int leftId;
     @JsonProperty("condition_right_id")

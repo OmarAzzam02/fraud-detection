@@ -13,7 +13,7 @@ import java.util.List;
 public class UserSenarioCashe {
 
     @Autowired
-    List<UnifiedConditionDLL> cashe;
+   private List<UnifiedConditionDLL> cashe;
 
 
     public void addCollectionOfScenariosToCashe(List<UnifiedConditionDLL> collection) {

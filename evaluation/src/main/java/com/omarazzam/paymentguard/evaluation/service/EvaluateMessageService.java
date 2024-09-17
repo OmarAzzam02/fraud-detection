@@ -12,7 +12,6 @@ import com.omarazzam.paymentguard.evaluation.entity.scenario.UnifiedConditionDLL
 import com.omarazzam.paymentguard.evaluation.entity.scenario.UnifiedConditionNode;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class EvaluateMessageService {
     private UserSenarioCashe cache;
 
     @Autowired
-    ObjectMapper objectMapper;
+   private ObjectMapper objectMapper;
 
 
 
@@ -41,7 +40,7 @@ public class EvaluateMessageService {
         boolean headConditionResult = headCondition.getCondition().evaluate(headMessageFieldValue);
         curr = curr.getNext();
 
-
+     //   log.info("Evaluate {} " , curr.getData().getScenarioName());
         while (curr != null) {
             try {
                 FullCondition condition = curr.getData().getFullCondition();

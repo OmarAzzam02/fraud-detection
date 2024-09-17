@@ -24,38 +24,36 @@ import java.util.List;
 public class ConstructScenarioUnifiedCondition {
 
     @Autowired
-    UserSenarioCashe userSenarioCashe;
+    private UserSenarioCashe userSenarioCashe;
 
     @Autowired
-    OperatorFactory operatorFactory;
+    private OperatorFactory operatorFactory;
 
     @Autowired
-    ConnectorFactory connectorFactory;
+    private ConnectorFactory connectorFactory;
 
     @Autowired
-    ConditionFactory conditionFactory;
+    private ConditionFactory conditionFactory;
 
     public void createUnifiedCondition(List<UserScenarioDTO> scenarios) {
-            log.info("Creating unified condition");
+        log.info("Creating unified condition");
 
-            List<UnifiedConditionDLL>  finalScenarioCondition = new ArrayList<>();
+        List<UnifiedConditionDLL> finalScenarioCondition = new ArrayList<>();
         for (UserScenarioDTO scenario : scenarios) {
             UnifiedConditionDLL unifiedConditionList = new UnifiedConditionDLL();
 
             try {
                 int i = 0;
-                // Loop over the size of the condition details
+
                 for (; i < scenario.getCondition().getDetails().size(); i++) {
                     Condition cond = createCondition(scenario.getCondition(), i);
 
                     Connector connector = null;
-                    // Assign connector if it's available for the current index
+
                     if (i < scenario.getCondition().getConnectors().size()) {
                         String connect = scenario.getCondition().getConnectors().get(i).getConnector();
                         connector = connectorFactory.createConnector(connect);
-                    }
-
-                    else if (i == scenario.getCondition().getDetails().size() - 1 && i - 1 >= 0) {
+                    } else if (i == scenario.getCondition().getDetails().size() - 1 && i - 1 >= 0) {
                         String connect = scenario.getCondition().getConnectors().get(i - 1).getConnector();
                         connector = connectorFactory.createConnector(connect);
                     }
@@ -73,8 +71,8 @@ public class ConstructScenarioUnifiedCondition {
 
                     unifiedConditionList.add(uniCond);
                 }
-              finalScenarioCondition.add(unifiedConditionList);
-            }  catch (Exception e) {
+                finalScenarioCondition.add(unifiedConditionList);
+            } catch (Exception e) {
                 log.error(e);
             }
         }

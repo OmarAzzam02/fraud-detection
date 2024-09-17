@@ -16,22 +16,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/license-service")
 public class LicenseValidationController {
 
-@Autowired
-    ValidateLicenseService validateLicenseService;
+    @Autowired
+    private ValidateLicenseService validateLicenseService;
 
     @PostMapping("/validate")
-    ResponseEntity<?> validateMessage( @RequestBody Licence message) {
+    ResponseEntity<?> validateMessage(@RequestBody Licence message) {
 
 
         try {
-        boolean isValid = validateLicenseService.isValidLicense(message);
+            boolean isValid = validateLicenseService.isValidLicense(message);
 
-        if (isValid)
-            return ResponseEntity.ok().body("Valid License");
+            if (isValid)
+                return ResponseEntity.ok().body("Valid License");
 
-        else return ResponseEntity.badRequest().body("Invalid License");
+            else return ResponseEntity.badRequest().body("Invalid License");
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error(ex);
             return ResponseEntity.badRequest().body("An Expected Error occurred");
         }

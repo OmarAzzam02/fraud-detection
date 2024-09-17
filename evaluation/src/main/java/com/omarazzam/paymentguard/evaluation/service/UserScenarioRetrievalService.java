@@ -19,15 +19,15 @@ import java.util.List;
 public class UserScenarioRetrievalService {
 
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     @Autowired
-    ConstructScenarioUnifiedCondition constructScenarioUnifiedCondition;
+    private ConstructScenarioUnifiedCondition constructScenarioUnifiedCondition;
 
     @Autowired
-    UserSenarioCashe userSenarioCashe;
+    private UserSenarioCashe userSenarioCashe;
     @Autowired
-    DiscoveryClient discoveryClient;
+    private DiscoveryClient discoveryClient;
 
     @PostConstruct
     void init() {

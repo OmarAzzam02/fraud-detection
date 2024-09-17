@@ -19,15 +19,15 @@ public class ValidateLicenseService {
     private List<ValidRefrence> validReferences;
 
     @Autowired
-    private  ObjectMapper objectMapper;
-
+    private ObjectMapper objectMapper;
 
 
     private void readFile() {
         try {
-            // Reading the JSON as a list of ValidRefrence objects
+
             ClassPathResource resource = new ClassPathResource("data.json");
-            validReferences = objectMapper.readValue(resource.getInputStream(), new TypeReference<List<ValidRefrence>>() {});
+            validReferences = objectMapper.readValue(resource.getInputStream(), new TypeReference<List<ValidRefrence>>() {
+            });
             log.info("Valid references loaded: {}", validReferences);
         } catch (IOException e) {
             log.error("Error reading JSON file", e);

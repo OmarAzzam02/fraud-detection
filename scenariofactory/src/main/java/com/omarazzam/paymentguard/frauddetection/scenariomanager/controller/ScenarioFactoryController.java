@@ -18,7 +18,7 @@ import java.util.List;
 public class ScenarioFactoryController {
 
     @Autowired
-    UserScenarioServiceImpl userScenarioService;
+    private UserScenarioServiceImpl userScenarioService;
 
     @PostMapping("/create")
     ResponseEntity<?> CreateUserScenario(@RequestBody UserScenario senario){

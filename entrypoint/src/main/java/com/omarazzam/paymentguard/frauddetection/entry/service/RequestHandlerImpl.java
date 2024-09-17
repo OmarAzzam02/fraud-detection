@@ -10,24 +10,20 @@ import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
-public class RequestHandlerImpl implements  RequestHandler {
+public class RequestHandlerImpl implements RequestHandler {
 
     @Autowired
-    LicenceValidatorRequestHandlerService licenceValidatorRequestHandlerService;
-
-
-
-
+    private LicenceValidatorRequestHandlerService licenceValidatorRequestHandlerService;
 
     @Override
     public PaymentTransaction HandleValidatorRequest(PaymentTransaction message) throws LicenseIsNotValidException, NoServiceInstanceFoundException, Exception {
         try {
-          return  licenceValidatorRequestHandlerService.sendRequestToLicenseValidator(message);
-        }catch (NoServiceInstanceFoundException | LicenseIsNotValidException e){
+            return licenceValidatorRequestHandlerService.sendRequestToLicenseValidator(message);
+        } catch (NoServiceInstanceFoundException | LicenseIsNotValidException e) {
             log.error(e);
             throw e;
 
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error(e);
             throw e;
         }

@@ -20,10 +20,7 @@ import java.util.Arrays;
 public class EvaluationController {
 
     @Autowired
-    UserSenarioCashe userSenarioCashe;
-
-    @Autowired
-    ConstructScenarioUnifiedCondition constructScenarioUnifiedCondition;
+     private  ConstructScenarioUnifiedCondition constructScenarioUnifiedCondition;
 
     @PostMapping("/add-user-scenario-to-cashe")
     void addUserScenarioToCashe( @RequestBody UserScenarioDTO scenario) {

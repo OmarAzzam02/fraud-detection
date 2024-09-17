@@ -18,23 +18,23 @@ import java.util.Map;
 public class EvaluatedMessageCashe {
 
     @Autowired
-     private Map<Long,PaymentTransaction> evaluatedMessages;
+    private Map<Long, PaymentTransaction> evaluatedMessages;
 
 
-   public void addTransaction(PaymentTransaction transaction) {
-       evaluatedMessages.put(transaction.getId(),transaction);
+    public void addTransaction(PaymentTransaction transaction) {
+        evaluatedMessages.put(transaction.getId(), transaction);
     }
 
     public void removeTransaction(PaymentTransaction transaction) {
-       evaluatedMessages.remove(transaction.getId());
+        evaluatedMessages.remove(transaction.getId());
     }
 
-
-    public boolean isResponeBack(long payId){
-      return  getTransaction(payId) != null;
+    public boolean isResponeBack(long payId) {
+        return getTransaction(payId) != null;
     }
 
-    public PaymentTransaction getTransaction(long payId){
-       return evaluatedMessages.get(payId);
+    public PaymentTransaction getTransaction(long payId) {
+        return evaluatedMessages.get(payId);
     }
+
 }
