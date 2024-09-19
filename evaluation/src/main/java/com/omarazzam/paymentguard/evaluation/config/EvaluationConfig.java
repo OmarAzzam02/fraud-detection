@@ -43,7 +43,7 @@
         @Bean
         public ObjectMapper objectMapper() {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JavaTimeModule()); // Register the JavaTimeModule
+            mapper.registerModule(new JavaTimeModule());
             return mapper;
         }
 
@@ -56,7 +56,7 @@
             return new RestTemplate();
         }
 
-    //    @Bean
+  //    @Bean
     //    public Map<String, Object> consumerConfig() {
     //        Map<String, Object> props = new HashMap<>();
     //        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,

@@ -10,8 +10,6 @@ public class EqualOperator implements Operator<String> {
 
     @Override
     public boolean evaluate(String messageValue, String conditionValue) {
-              boolean res =   messageValue.equals(conditionValue);
-
-        return res;
+         return messageValue.equals(conditionValue);
     }
 }

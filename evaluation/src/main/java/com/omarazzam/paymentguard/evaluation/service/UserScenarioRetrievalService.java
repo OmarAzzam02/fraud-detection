@@ -33,19 +33,22 @@ public class UserScenarioRetrievalService {
     void init() {
         try {
             log.info("getting the info from scenarios in init function");
+
             List<ServiceInstance> list = discoveryClient.getInstances("SCENARIO-FACTORY");
             log.info(list.get(0).getUri().toURL());
             String url = list.get(0).getUri().toURL() + "/retrieve-scenarios";
+
             ResponseEntity<List<UserScenarioDTO>> response = restTemplate.exchange(
                     url,
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<UserScenarioDTO>>() {
                     });
+
             constructScenarioUnifiedCondition.createUnifiedCondition(response.getBody());
 
-        } catch (Exception e) {
-            log.error(e);
+        }catch (Exception e) {
+            log.error("Could not get the scenarios from the scenario factory", e);
         }
     }
 }

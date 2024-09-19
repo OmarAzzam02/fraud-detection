@@ -50,7 +50,7 @@ public class ScenarioFactoryController {
     List<UserScenario> getScenarios() {
         List<UserScenario> scenarios = new ArrayList<>();
 
-        for (int i = 1; i <=20; i++) {
+        for (int i = 1; i <=1; i++) {
             UserScenario scenario = UserScenario.builder()
                     .name("Scenario " + i)
                     .senarioType(PayType.MOBILE)
@@ -65,8 +65,8 @@ public class ScenarioFactoryController {
                                     ))
                                     .details(Arrays.asList(
                                             new ConditionDetails(101 + i, "amount", String.valueOf(1000), ">", "DECIMAL"),
-                                            new ConditionDetails(102 + i, "pay_type", "MOBILE", "=", "STRING"),
-                                            new ConditionDetails(103 + i, "status", "PENDING", "=", "STRING"),
+                                            new ConditionDetails(102 + i, "payType", "MOBILE", "=", "STRING"),
+                                            new ConditionDetails(103 + i, "reciever.name", "Omar Azzam", "=", "STRING"),
                                             new ConditionDetails(104 + i, "address.country", "Jordan", "=", "STRING")
 
 

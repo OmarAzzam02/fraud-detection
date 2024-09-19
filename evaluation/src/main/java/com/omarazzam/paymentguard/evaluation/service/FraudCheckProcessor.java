@@ -37,7 +37,6 @@ public class FraudCheckProcessor {
     private RestTemplate restTemplate;
 
 
-
     @Autowired
     void buildPipeline(final StreamsBuilder streamsBuilder) {
         KStream<String, String> messageStream = streamsBuilder
@@ -45,7 +44,6 @@ public class FraudCheckProcessor {
 
         messageStream.foreach((key, value) -> {
             try {
-              log.info("in kafka stream");
 
 
                 PaymentTransactionEvaluation message = objectMapper.readValue(value, PaymentTransactionEvaluation.class);
@@ -54,11 +52,11 @@ public class FraudCheckProcessor {
                 boolean res = cashe.getCashe()
                         .parallelStream()
                         .anyMatch(scenario -> evaluateMessageService
-                        .evaluate(message, scenario));
+                                .evaluate(message, scenario));
 
                 FraudStatus flag = res ? FraudStatus.FRAUD : FraudStatus.NOTFRAUD;
                 message.setFlag(flag);
-                long endTime = System.currentTimeMillis();
+
 
                 sendToReader(message);
 
@@ -74,11 +72,9 @@ public class FraudCheckProcessor {
         return CompletableFuture.runAsync(() -> {
             try {
 
-                log.info("sending the evaluated messa geto reader ");
                 String url = "http://ENTRYPOINT/api/v1/fraud-status";
-                restTemplate.postForEntity(url, message, Void.class);
+                restTemplate.postForLocation(url, message);
             } catch (Exception e) {
-
                 throw new RuntimeException("Failed to send message to reader", e);
             }
         });

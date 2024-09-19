@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 
-
 @Service
 @Log4j2
 @Builder
@@ -23,28 +22,24 @@ public class LicenceValidatorRequestHandlerService {
     private SendMessageToEvaluation sendMessageToEvaluationImpl;
 
 
+    public PaymentTransaction sendRequestToLicenseValidator(final PaymentTransaction message){
+      //  log.info(" Sending request to license validator {} ", message);
 
-    public PaymentTransaction sendRequestToLicenseValidator(final PaymentTransaction message) throws Exception {
-            log.info(" Sending request to license validator {} " , message);
+        try {
+          send(message);
+        } catch (Exception e) {
+            log.error(e);
+            throw e;
+        }
 
-             try {
-
-                 send(message);
-
-             }catch(Exception e) {
-                 log.error(e);
-                 throw e;
-             }
-
-       return  sendMessageToEvaluationImpl.sendMessage(message);
+        return sendMessageToEvaluationImpl.sendMessage(message);
     }
 
 
-    private  void send(final PaymentTransaction message) throws Exception {
-            LicenseDTO licenseDTO = LicenseDTO.builder().payType(message.getPayType()).referenceNumber(message.getReferenceNumber()).build();
-;
-            String url  = "http://LICENCE-VALIDATOR/license-service/validate";
-            ResponseEntity<String> response = restTemplate.postForEntity(url, licenseDTO, String.class);
+    private void send(final PaymentTransaction message) {
+        LicenseDTO licenseDTO = LicenseDTO.builder().payType(message.getPayType()).referenceNumber(message.getReferenceNumber()).build();
+        String url = "http://LICENCE-VALIDATOR/license-service/validate";
+        ResponseEntity<String> response = restTemplate.postForEntity(url, licenseDTO, String.class);
     }
 
 

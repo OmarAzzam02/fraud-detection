@@ -10,6 +10,6 @@ public class GreaterOrEqualOperator implements Operator<BigDecimal>{
 
     @Override
     public boolean evaluate(BigDecimal messageValue, BigDecimal conditionValue) {
-        return false;
+        return messageValue.compareTo(conditionValue) >= 0;
     }
 }

@@ -25,16 +25,15 @@ public class SendMessageToEvaluationImpl implements SendMessageToEvaluation {
 
     @Override
     public PaymentTransaction sendMessage(final PaymentTransaction message) {
-        log.info("Sending Message to Evaluation {}", message.getId());
+     //   log.info("Sending Message to Evaluation {}", message.getId());
 
         kafkaTemplate.send("transaction", message);
 
-        while (!evaluatedMessageCashe.isResponeBack(message.getId())) {
-        }
+        while (!evaluatedMessageCashe.isResponeBack(message.getId())) {}
         PaymentTransaction messageResultBack = evaluatedMessageCashe.getTransaction(message.getId());
         evaluatedMessageCashe.removeTransaction(messageResultBack);
 
-        log.info(" message Result Back in reader ");
+    log.info(" message Result Back in reader ");
 
         return messageResultBack;
     }

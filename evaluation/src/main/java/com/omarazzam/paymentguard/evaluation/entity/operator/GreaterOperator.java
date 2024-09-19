@@ -8,14 +8,14 @@ import java.math.BigDecimal;
 
 @Log4j2
 @Component
-public class GreaterOperator implements  Operator<BigDecimal>{
+public class GreaterOperator implements Operator<BigDecimal> {
 
     @Override
     public boolean evaluate(BigDecimal messageValue, BigDecimal conditionValue) {
 
-              boolean res =    messageValue.compareTo(conditionValue) > 0;
+        return messageValue.compareTo(conditionValue) > 0;
 
-        return res;
+
     }
 }
 

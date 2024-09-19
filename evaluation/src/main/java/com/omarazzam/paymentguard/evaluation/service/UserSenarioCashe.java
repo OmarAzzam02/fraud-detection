@@ -18,7 +18,6 @@ public class UserSenarioCashe {
 
     public void addCollectionOfScenariosToCashe(List<UnifiedConditionDLL> collection) {
         log.info("adding collection to Cashe");
-        log.info(collection.toString());
         cashe.addAll(collection);
         log.info(cashe.size());
     }

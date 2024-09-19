@@ -18,8 +18,10 @@ public class PaymentTransactionEvaluation {
     private  long id;
     private double amount;
     private String currency;
-    @JsonProperty("customer_details")
-    private Map<String , Customer> customerDetails;
+    @JsonProperty("customer_receiver")
+    private Customer reciever ;
+    @JsonProperty("customer_sender")
+    private Customer  sender ;
     private String description;
     private String notes;
     @JsonProperty("pay_type")
