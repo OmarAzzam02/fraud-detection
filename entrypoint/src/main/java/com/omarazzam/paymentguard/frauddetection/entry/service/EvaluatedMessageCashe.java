@@ -30,11 +30,9 @@ public class EvaluatedMessageCashe {
     }
 
     public boolean isResponeBack(long payId) {
-        return getTransaction(payId) != null;
+        return evaluatedMessages.containsKey(payId);
     }
 
-    public PaymentTransaction getTransaction(long payId) {
-        return evaluatedMessages.get(payId);
-    }
+
 
 }

@@ -23,7 +23,7 @@ public class EvaluationController {
      private  ConstructScenarioUnifiedCondition constructScenarioUnifiedCondition;
 
     @PostMapping("/add-user-scenario-to-cashe")
-    void addUserScenarioToCashe( @RequestBody UserScenarioDTO scenario) {
+    void addUserScenarioToCashe(@RequestBody UserScenarioDTO scenario) {
 
         constructScenarioUnifiedCondition.createUnifiedCondition(Arrays.asList(scenario));
     }

@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @Service
@@ -27,6 +29,7 @@ public class EvaluateMessageService {
    private ObjectMapper objectMapper;
 
 
+    private static final Map<Class<?>, Map<String, Field>> fieldCache = new HashMap<>();
 
 
 
@@ -41,7 +44,7 @@ public class EvaluateMessageService {
          finalResult = headCondition.getCondition().evaluate(headMessageFieldValue);
          curr = curr.getNext();
 
-         log.info("Evaluate {} " , curr.getData().getScenarioName());
+         //log.info("Evaluate {} " , curr.getData().getScenarioName());
         while (curr != null) {
 
             try {
@@ -65,31 +68,34 @@ public class EvaluateMessageService {
 
     private Object getMessageValue(PaymentTransactionEvaluation message, String fieldToSearch) {
         try {
-
             String[] fields = fieldToSearch.split("\\.");
-
             Object currentObject = message;
 
-
             for (String fieldName : fields) {
+                Class<?> currentClass = currentObject.getClass();
 
-                Field field = currentObject.getClass().getDeclaredField(fieldName);
-                field.setAccessible(true);
+
+                Map<String, Field> classFieldMap = fieldCache.computeIfAbsent(currentClass, k -> new HashMap<>());
+
+
+                Field field = classFieldMap.computeIfAbsent(fieldName, f -> {
+                    try {
+                        Field declaredField = currentClass.getDeclaredField(f);
+                        declaredField.setAccessible(true);
+                        return declaredField;
+                    } catch (NoSuchFieldException e) {
+                        throw new RuntimeException("Field not found: " + f, e);
+                    }
+                });
 
 
                 currentObject = field.get(currentObject);
             }
-
-
             return currentObject;
-
-        } catch (Exception ex) {
-            log.error("Error accessing field:  {}" , ex.getMessage());
-            throw new RuntimeException("Error accessing field: " + ex.getMessage(), ex);
+        } catch (Exception e) {
+            throw new RuntimeException("Error accessing field: " + fieldToSearch, e);
         }
     }
-
-
 
     private boolean handleConnectorLogic(boolean conditionResult, Connector connector) {
         return (!conditionResult && connector instanceof AndConnector) ||

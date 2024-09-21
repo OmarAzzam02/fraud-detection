@@ -50,7 +50,7 @@ public class ScenarioFactoryController {
     List<UserScenario> getScenarios() {
         List<UserScenario> scenarios = new ArrayList<>();
 
-        for (int i = 1; i <=1; i++) {
+        for (int i = 1; i <=20; i++) {
             UserScenario scenario = UserScenario.builder()
                     .name("Scenario " + i)
                     .senarioType(PayType.MOBILE)

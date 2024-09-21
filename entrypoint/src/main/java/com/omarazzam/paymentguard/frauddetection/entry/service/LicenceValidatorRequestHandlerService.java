@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 @Builder
 public class LicenceValidatorRequestHandlerService {
 
+    private static final String  LICENSE_URL = "http://LICENCE-VALIDATOR/license-service/validate";
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -22,11 +24,11 @@ public class LicenceValidatorRequestHandlerService {
     private SendMessageToEvaluation sendMessageToEvaluationImpl;
 
 
-    public PaymentTransaction sendRequestToLicenseValidator(final PaymentTransaction message){
-      //  log.info(" Sending request to license validator {} ", message);
+    public PaymentTransaction sendRequestToLicenseValidator(final PaymentTransaction message) {
+        //  log.info(" Sending request to license validator {} ", message);
 
         try {
-          send(message);
+            send(message);
         } catch (Exception e) {
             log.error(e);
             throw e;
@@ -38,8 +40,8 @@ public class LicenceValidatorRequestHandlerService {
 
     private void send(final PaymentTransaction message) {
         LicenseDTO licenseDTO = LicenseDTO.builder().payType(message.getPayType()).referenceNumber(message.getReferenceNumber()).build();
-        String url = "http://LICENCE-VALIDATOR/license-service/validate";
-        ResponseEntity<String> response = restTemplate.postForEntity(url, licenseDTO, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(LICENSE_URL, licenseDTO, String.class);
+
     }
 
 

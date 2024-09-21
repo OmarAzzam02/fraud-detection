@@ -8,7 +8,7 @@ spring:
   cloud:
     loadbalancer:
       cache:
-        ttl: 60s
+        ttl: 120s
 
 
   datasource:

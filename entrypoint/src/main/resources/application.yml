@@ -5,7 +5,7 @@ spring:
   cloud:
     loadbalancer:
       cache:
-        ttl: 60s
+        ttl: 120s
 
 
  # the config is ready for use but is not activated

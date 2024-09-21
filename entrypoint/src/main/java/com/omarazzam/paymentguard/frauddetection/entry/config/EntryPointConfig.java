@@ -41,6 +41,9 @@ public class EntryPointConfig {
     }
 
 
+
+
+
     @Bean
     public Map<String, Object> producerConfig() {
         Map<String, Object> props = new HashMap<>();

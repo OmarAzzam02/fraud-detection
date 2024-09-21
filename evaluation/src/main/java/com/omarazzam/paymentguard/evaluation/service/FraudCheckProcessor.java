@@ -11,7 +11,7 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -32,7 +32,7 @@ public class FraudCheckProcessor {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private UserSenarioCashe cashe;
+    private UserSenarioCashe cache;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -45,11 +45,11 @@ public class FraudCheckProcessor {
         messageStream.foreach((key, value) -> {
             try {
 
-
+                log.info("kafka stream");
                 PaymentTransactionEvaluation message = objectMapper.readValue(value, PaymentTransactionEvaluation.class);
 
 
-                boolean res = cashe.getCashe()
+                boolean res = cache.getCashe()
                         .parallelStream()
                         .anyMatch(scenario -> evaluateMessageService
                                 .evaluate(message, scenario));
@@ -68,6 +68,7 @@ public class FraudCheckProcessor {
     }
 
 
+    @Async
     public CompletableFuture<Void> sendToReader(final PaymentTransactionEvaluation message) {
         return CompletableFuture.runAsync(() -> {
             try {

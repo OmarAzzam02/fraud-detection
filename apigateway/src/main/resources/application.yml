@@ -19,6 +19,6 @@
               - Path=/scenario-factory/**
       loadbalancer:
         cache:
-          ttl: 30s
+          ttl: 60s
     application:
       name: api-gateway
