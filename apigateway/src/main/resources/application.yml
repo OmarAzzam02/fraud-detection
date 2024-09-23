@@ -12,13 +12,13 @@
           - id: entrypoint
             uri: lb://entrypoint
             predicates:
-              - Path=/entrypoint/**
+              - Path=/entrypoint/api/v1/entry-point
           - id: scenario-factory
             uri: lb://scenario-factory
             predicates:
               - Path=/scenario-factory/**
       loadbalancer:
         cache:
-          ttl: 60s
+          ttl: 15s
     application:
       name: api-gateway

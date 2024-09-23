@@ -24,6 +24,7 @@ public class LicenseValidationController {
 
 
         try {
+            log.info("validating licence");
             boolean isValid = validateLicenseService.isValidLicense(message);
 
             if (isValid)

@@ -3,6 +3,7 @@ import com.omarazzam.paymentguard.frauddetection.entry.entity.PaymentTransaction
 import com.omarazzam.paymentguard.frauddetection.entry.exception.LicenseIsNotValidException;
 import com.omarazzam.paymentguard.frauddetection.entry.exception.NoServiceInstanceFoundException;
 import com.omarazzam.paymentguard.frauddetection.entry.service.EvaluatedMessageCashe;
+import com.omarazzam.paymentguard.frauddetection.entry.service.MonitorService;
 import com.omarazzam.paymentguard.frauddetection.entry.service.RequestHandlerImpl;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class EntryController {
 
     @Autowired
     RequestHandlerImpl requestHandler;
+
+    @Autowired
+    MonitorService monitorService;
 
     @Autowired
     EvaluatedMessageCashe evaluatedMessageCashe;
@@ -38,7 +42,12 @@ public class EntryController {
 
     @PostMapping("/fraud-status")
     public ResponseEntity<Void> messageStatus(@RequestBody PaymentTransaction message) {
-        evaluatedMessageCashe.addTransaction(message);
+        log.info("IN controller frauad status update");
+
+        synchronized (monitorService.getSharedMonitor()) {
+            evaluatedMessageCashe.addTransaction(message);
+            monitorService.getSharedMonitor().notifyAll();
+        }
     return ResponseEntity.ok().build();
     }
 }

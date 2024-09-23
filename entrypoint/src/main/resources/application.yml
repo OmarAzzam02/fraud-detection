@@ -5,7 +5,7 @@ spring:
   cloud:
     loadbalancer:
       cache:
-        ttl: 120s
+        ttl: 30s
 
 
  # the config is ready for use but is not activated
@@ -25,3 +25,6 @@ eureka:
 
 server:
   port: 8080
+
+
+

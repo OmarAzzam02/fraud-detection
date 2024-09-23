@@ -10,3 +10,15 @@ eureka:
     serviceUrl:
       #can be switched to https for security
       defaultZone: http://${eureka.instance.hostname}:${server.port}
+
+
+      eureka:
+        client:
+          healthcheck:
+            enabled: true
+
+
+        instance:
+          leaseRenewalIntervalInSeconds: 10  # Heartbeat interval
+          leaseExpirationDurationInSeconds: 30  # Time until the instance is marked as down
+
