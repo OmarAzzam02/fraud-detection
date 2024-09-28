@@ -1,9 +1,6 @@
 package com.omarazzam.paymentguard.frauddetection.licencevalidator.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.omarazzam.paymentguard.frauddetection.licencevalidator.entity.Licence;
-import com.omarazzam.paymentguard.frauddetection.licencevalidator.entity.ValidRefrence;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +14,7 @@ public class ValidateLicenseService {
 
 
     @Autowired
-    private ValidRefrenceCashe validReferences;
-
-
-
+    private ValidReferenceCache validReferences;
 
 
     public boolean isValidLicense(Licence message) throws Exception {

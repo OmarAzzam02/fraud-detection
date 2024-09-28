@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 @ToString
-public class PaymentTransactionEvaluation {
+public class PaymentTransactionEvaluation implements Serializable {
     @JsonProperty("transaction_id")
     private  long id;
     private double amount;

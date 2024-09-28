@@ -2,8 +2,6 @@ package com.omarazzam.paymentguard.frauddetection.entry.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.omarazzam.paymentguard.frauddetection.entry.entity.PaymentTransaction;
-import com.omarazzam.paymentguard.frauddetection.entry.service.EvaluatedMessageCashe;
-import com.omarazzam.paymentguard.frauddetection.entry.service.SendMessageToEvaluation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -11,8 +9,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Log4j2
 @Service
@@ -58,12 +54,11 @@ public class SendMessageToEvaluationImpl implements SendMessageToEvaluation {
     }
 
     @KafkaListener(topics = "evaluated-transactions", groupId = "evaluated-transactions")
-    public void recieveEvaluatedMessage(String value, Acknowledgment ack) {
+    public void recieveEvaluatedMessage(PaymentTransaction evaluatedPaymentTransaction, Acknowledgment ack) {
         try {
-            log.info("Received evaluated message: {}", value);
+            log.info("Received evaluated message: {}", evaluatedPaymentTransaction.getId());
 
-            PaymentTransaction evaluatedMessage = objectMapper.readValue(value, PaymentTransaction.class);
-            evaluatedMessageCashe.addTransaction(evaluatedMessage);
+            evaluatedMessageCashe.addTransaction(evaluatedPaymentTransaction);
 
             synchronized (monitorService.getSharedMonitor()) {
                 ack.acknowledge();

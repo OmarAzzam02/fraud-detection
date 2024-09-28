@@ -2,8 +2,10 @@ package com.omarazzam.paymentguard.evaluation.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.omarazzam.paymentguard.evaluation.service.EvaluateMessageService;
+import com.omarazzam.paymentguard.evaluation.util.PaymentTransactionSerde;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.StreamsConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +13,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
+import com.omarazzam.paymentguard.frauddetection.entry.entity.PaymentTransaction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +40,13 @@ public class KafkaStreamConfig {
         props.put(APPLICATION_ID_CONFIG, "streams-app");
         props.put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-        props.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+        props.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, PaymentTransactionSerde.class);
+        props.put("spring.kafka.consumer.properties.spring.json.trusted.packages", "*");
+
+        props.put(NUM_STREAM_THREADS_CONFIG, "4");
+        props.put("max.poll.records", "500");
+
+
 
         return new KafkaStreamsConfiguration(props);
     }

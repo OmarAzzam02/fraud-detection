@@ -25,7 +25,7 @@ public class UserScenarioRetrievalService {
     private ConstructScenarioUnifiedCondition constructScenarioUnifiedCondition;
 
     @Autowired
-    private UserSenarioCashe userSenarioCashe;
+    private UserScenarioCache userSenarioCashe;
     @Autowired
     private DiscoveryClient discoveryClient;
 

@@ -16,7 +16,7 @@ import java.util.List;
 @Log4j2
 @Service
 @Getter
-public class ValidRefrenceCashe {
+public class ValidReferenceCache {
 
     @Autowired
     private List<ValidRefrence> validRefrenceCashe;
@@ -44,7 +44,7 @@ public class ValidRefrenceCashe {
     }
 
 
-    List<ValidRefrence> getValidRefrences() {
+    public List<ValidRefrence> getValidRefrences() {
         return validRefrenceCashe;
     }
 

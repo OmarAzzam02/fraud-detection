@@ -2,6 +2,8 @@ package com.omarazzam.paymentguard.frauddetection.entry.config;
 
 
 import com.omarazzam.paymentguard.frauddetection.entry.entity.PaymentTransaction;
+import com.omarazzam.paymentguard.frauddetection.entry.util.PaymentTransactionDeserializer;
+import com.omarazzam.paymentguard.frauddetection.entry.util.PaymentTransactionSererializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -60,9 +62,9 @@ public class EntryPointConfig {
         RedisTemplate<String, PaymentTransaction> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
 
-        // Set the value serializer to Jackson
+
         template.setValueSerializer(new Jackson2JsonRedisSerializer<>(PaymentTransaction.class));
-        // Optionally set the key serializer
+
         template.setKeySerializer(new StringRedisSerializer());
 
         return template;
@@ -78,7 +80,7 @@ public class EntryPointConfig {
         Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, PaymentTransactionSererializer.class);
 
 
         return props;
@@ -106,7 +108,7 @@ public class EntryPointConfig {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, PaymentTransactionDeserializer.class);
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
@@ -114,13 +116,13 @@ public class EntryPointConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
+    public ConsumerFactory<String, PaymentTransaction> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfig());
     }
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory =
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, PaymentTransaction>> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, PaymentTransaction> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);

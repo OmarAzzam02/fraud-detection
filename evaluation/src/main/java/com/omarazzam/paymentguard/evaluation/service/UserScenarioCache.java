@@ -10,11 +10,10 @@ import java.util.List;
 
 @Service
 @Log4j2
-public class UserSenarioCashe {
+public class UserScenarioCache {
 
     @Autowired
-   private List<UnifiedConditionDLL> cashe;
-
+    private List<UnifiedConditionDLL> cashe;
 
     public void addCollectionOfScenariosToCashe(List<UnifiedConditionDLL> collection) {
         log.info("adding collection to Cashe");

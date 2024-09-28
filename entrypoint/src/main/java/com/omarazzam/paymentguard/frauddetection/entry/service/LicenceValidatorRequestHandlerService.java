@@ -30,7 +30,7 @@ public class LicenceValidatorRequestHandlerService {
         //  log.info(" Sending request to license validator {} ", message);
 
         try {
-//            send(message);
+            send(message);
         } catch (Exception e) {
             log.error(e);
             throw e;
@@ -43,7 +43,6 @@ public class LicenceValidatorRequestHandlerService {
     private void send(final PaymentTransaction message) {
         LicenseDTO licenseDTO = LicenseDTO.builder().payType(message.getPayType()).referenceNumber(message.getReferenceNumber()).build();
         ResponseEntity<String> response = restTemplate.postForEntity(LICENSE_URL, licenseDTO, String.class);
-
     }
 
 

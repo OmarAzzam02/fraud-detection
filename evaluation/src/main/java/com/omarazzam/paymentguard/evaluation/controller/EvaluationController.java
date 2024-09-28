@@ -4,7 +4,6 @@ package com.omarazzam.paymentguard.evaluation.controller;
 
 import com.omarazzam.paymentguard.evaluation.dto.scenarioDTO.UserScenarioDTO;
 import com.omarazzam.paymentguard.evaluation.service.ConstructScenarioUnifiedCondition;
-import com.omarazzam.paymentguard.evaluation.service.UserSenarioCashe;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -24,7 +24,7 @@ import java.util.List;
 public class ConstructScenarioUnifiedCondition {
 
     @Autowired
-    private UserSenarioCashe userSenarioCashe;
+    private UserScenarioCache userSenarioCashe;
 
     @Autowired
     private OperatorFactory operatorFactory;

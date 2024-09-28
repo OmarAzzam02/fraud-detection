@@ -15,7 +15,6 @@ import java.util.Map;
 @Log4j2
 @Service
 @Getter
-@Setter
 @Data
 public class EvaluatedMessageCashe {
 
